@@ -20,12 +20,25 @@ class CarRentalApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+  Widget navButton(String text) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: TextButton(
+        onPressed: () {},
+        child: Text(
+          text,
+          style: const TextStyle(color: Colors.white),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xffF5F7FA),
 
-      // TOP BAR (UNCHANGED)
+      // TOP BAR (UPDATED ONLY BUTTON STYLE + LOGIN)
       appBar: AppBar(
         elevation: 0,
         flexibleSpace: Container(
@@ -42,23 +55,11 @@ class HomePage extends StatelessWidget {
             color: Colors.white,
           ),
         ),
-        actions: const [
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Center(child: Text("Home", style: TextStyle(color: Colors.white))),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Center(child: Text("About", style: TextStyle(color: Colors.white))),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Center(child: Text("Cars", style: TextStyle(color: Colors.white))),
-          ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 12),
-            child: Center(child: Text("Contact", style: TextStyle(color: Colors.white))),
-          ),
+        actions: [
+          navButton("Home"),
+          navButton("About"),
+          navButton("Cars"),
+          navButton("Login"), // ✅ replaced Contact
         ],
       ),
 
@@ -66,7 +67,6 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
 
-            // HERO SECTION (UNCHANGED)
             SizedBox(
               height: 550,
               width: double.infinity,
@@ -241,21 +241,17 @@ class _BookingSectionState extends State<BookingSection> {
           Row(
             children: [
 
-              // ✅ ONLY CHANGE: Select Car -> Button
+              // ✅ FIXED: NO DEFAULT "Honda"
               ElevatedButton(
                 onPressed: () {
                   setState(() {
-                    carType = "Honda Civic";
+                    carType = "Select Car Type";
                   });
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: const Color(0xff1E3C72),
-                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                 ),
-                child: Text(
-                  carType,
-                  style: const TextStyle(color: Colors.white),
-                ),
+                child: Text(carType),
               ),
 
               const SizedBox(width: 10),
@@ -284,9 +280,7 @@ class _BookingSectionState extends State<BookingSection> {
                   });
                 }
               }),
-
               const SizedBox(width: 10),
-
               box(dropoffDate, () async {
                 DateTime? d = await showDatePicker(
                   context: context,
