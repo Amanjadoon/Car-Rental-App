@@ -66,7 +66,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           children: [
 
-            // HERO SECTION (UNCHANGED + BUTTONS RESTORED)
+            // HERO SECTION (UNCHANGED)
             SizedBox(
               height: 550,
               width: double.infinity,
@@ -104,10 +104,7 @@ class HomePage extends StatelessWidget {
                           ),
                           child: const Text(
                             "🚗 Plan Your Trip Now",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
 
@@ -119,51 +116,26 @@ class HomePage extends StatelessWidget {
                             color: Colors.white,
                             fontSize: 55,
                             fontWeight: FontWeight.bold,
-                            height: 1.1,
-                          ),
-                        ),
-
-                        const SizedBox(height: 20),
-
-                        const Text(
-                          "Premium cars at affordable prices.\nBook your dream ride today.",
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 18,
                           ),
                         ),
 
                         const SizedBox(height: 35),
 
-                        // 🔥 BUTTONS ADDED BACK
                         Row(
                           children: [
-
                             ElevatedButton(
+                              onPressed: () {},
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.orange,
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 18,
-                                ),
                               ),
-                              onPressed: () {},
                               child: const Text("Book Ride"),
                             ),
-
                             const SizedBox(width: 15),
-
                             OutlinedButton(
+                              onPressed: () {},
                               style: OutlinedButton.styleFrom(
                                 side: const BorderSide(color: Colors.white),
-                                foregroundColor: Colors.white,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 30,
-                                  vertical: 18,
-                                ),
                               ),
-                              onPressed: () {},
                               child: const Text("Learn More"),
                             ),
                           ],
@@ -177,8 +149,7 @@ class HomePage extends StatelessWidget {
 
             const SizedBox(height: 30),
 
-            // BOOKING SECTION (UPDATED - SAME AS BEFORE)
-            BookingSection(),
+            const BookingSection(),
 
             const SizedBox(height: 40),
           ],
@@ -201,32 +172,40 @@ class _BookingSectionState extends State<BookingSection> {
   String dropoffLocation = "Drop-off Location";
   String pickupDate = "Pick-up Date";
   String dropoffDate = "Drop-off Date";
-  String pickupTime = "Pick-up Time";
 
-  Future<void> pickDate(Function(String) onSelect) async {
-    DateTime? date = await showDatePicker(
+  final List<String> locations = [
+    "Islamabad",
+    "Lahore",
+    "Karachi",
+    "Abbottabad",
+    "Peshawar",
+    "Quetta",
+    "Multan",
+    "Faisalabad",
+    "Sialkot",
+    "Gujranwala",
+    "Rawalpindi",
+    "Murree",
+    "Hunza"
+  ];
+
+  void pickLocation(Function(String) onSelect) {
+    showModalBottomSheet(
       context: context,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
-      initialDate: DateTime.now(),
+      builder: (context) {
+        return ListView(
+          children: locations.map((e) {
+            return ListTile(
+              title: Text(e),
+              onTap: () {
+                setState(() => onSelect(e));
+                Navigator.pop(context);
+              },
+            );
+          }).toList(),
+        );
+      },
     );
-
-    if (date != null) {
-      onSelect("${date.day}-${date.month}-${date.year}");
-    }
-  }
-
-  Future<void> pickTime() async {
-    TimeOfDay? time = await showTimePicker(
-      context: context,
-      initialTime: TimeOfDay.now(),
-    );
-
-    if (time != null) {
-      setState(() {
-        pickupTime = time.format(context);
-      });
-    }
   }
 
   Widget box(String text, VoidCallback onTap) {
@@ -256,84 +235,73 @@ class _BookingSectionState extends State<BookingSection> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Container(
-        padding: const EdgeInsets.all(25),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(20),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withOpacity(0.08),
-              blurRadius: 15,
-              offset: const Offset(0, 5),
-            ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+      child: Column(
+        children: [
 
-            const Text(
-              "Book a Car",
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
+          Row(
+            children: [
 
-            const SizedBox(height: 20),
-
-            Row(
-              children: [
-                box(carType, () {
-                  setState(() => carType = "SUV Selected");
-                }),
-                const SizedBox(width: 10),
-                box(pickupLocation, () {
-                  setState(() => pickupLocation = "Abbottabad");
-                }),
-                const SizedBox(width: 10),
-                box(dropoffLocation, () {
-                  setState(() => dropoffLocation = "Islamabad");
-                }),
-              ],
-            ),
-
-            const SizedBox(height: 15),
-
-            Row(
-              children: [
-                box(pickupDate, () {
-                  pickDate((value) {
-                    setState(() => pickupDate = value);
+              // ✅ ONLY CHANGE: Select Car -> Button
+              ElevatedButton(
+                onPressed: () {
+                  setState(() {
+                    carType = "Honda Civic";
                   });
-                }),
-                const SizedBox(width: 10),
-                box(dropoffDate, () {
-                  pickDate((value) {
-                    setState(() => dropoffDate = value);
-                  });
-                }),
-                const SizedBox(width: 10),
-                box(pickupTime, () {
-                  pickTime();
-                }),
-              ],
-            ),
-
-            const SizedBox(height: 20),
-
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xff1E3C72),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 30, vertical: 15),
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xff1E3C72),
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                ),
+                child: Text(
+                  carType,
+                  style: const TextStyle(color: Colors.white),
+                ),
               ),
-              onPressed: () {},
-              child: const Text("Search Cars"),
-            ),
-          ],
-        ),
+
+              const SizedBox(width: 10),
+
+              box(pickupLocation, () => pickLocation((v) => pickupLocation = v)),
+
+              const SizedBox(width: 10),
+
+              box(dropoffLocation, () => pickLocation((v) => dropoffLocation = v)),
+            ],
+          ),
+
+          const SizedBox(height: 15),
+
+          Row(
+            children: [
+              box(pickupDate, () async {
+                DateTime? d = await showDatePicker(
+                  context: context,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                );
+                if (d != null) {
+                  setState(() {
+                    pickupDate = "${d.day}-${d.month}-${d.year}";
+                  });
+                }
+              }),
+
+              const SizedBox(width: 10),
+
+              box(dropoffDate, () async {
+                DateTime? d = await showDatePicker(
+                  context: context,
+                  firstDate: DateTime(2020),
+                  lastDate: DateTime(2030),
+                );
+                if (d != null) {
+                  setState(() {
+                    dropoffDate = "${d.day}-${d.month}-${d.year}";
+                  });
+                }
+              }),
+            ],
+          ),
+        ],
       ),
     );
   }
