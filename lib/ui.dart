@@ -11,6 +11,7 @@ class CarRentalApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: "Car Rental",
       home: const HomePage(),
     );
   }
@@ -22,158 +23,228 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: const Color(0xffF5F7FA),
 
-      // TOP NAV BAR (like website)
+      // TOP BAR (UNCHANGED)
       appBar: AppBar(
-        backgroundColor: Colors.white,
         elevation: 0,
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xff1E3C72), Color(0xff2A5298)],
+            ),
+          ),
+        ),
         title: const Text(
           "CAR Rental",
           style: TextStyle(
-            color: Colors.black,
             fontWeight: FontWeight.bold,
+            color: Colors.white,
           ),
         ),
         actions: const [
-          Text("Home", style: TextStyle(color: Colors.black)),
-          SizedBox(width: 15),
-          Text("About", style: TextStyle(color: Colors.black)),
-          SizedBox(width: 15),
-          Text("Cars", style: TextStyle(color: Colors.black)),
-          SizedBox(width: 15),
-          Text("Contact", style: TextStyle(color: Colors.black)),
-          SizedBox(width: 15),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Center(child: Text("Home", style: TextStyle(color: Colors.white))),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Center(child: Text("About", style: TextStyle(color: Colors.white))),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Center(child: Text("Cars", style: TextStyle(color: Colors.white))),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12),
+            child: Center(child: Text("Contact", style: TextStyle(color: Colors.white))),
+          ),
         ],
       ),
 
       body: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
+        child: Column(
+          children: [
 
-              // ---------------- HERO SECTION ----------------
-              Row(
+            // HERO SECTION (UNCHANGED + BUTTONS RESTORED)
+            SizedBox(
+              height: 550,
+              width: double.infinity,
+              child: Stack(
                 children: [
-                  // LEFT TEXT
-                  Expanded(
+
+                  Positioned.fill(
+                    child: Image.network(
+                      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=1500",
+                      fit: BoxFit.cover,
+                      alignment: Alignment.bottomCenter,
+                    ),
+                  ),
+
+                  Positioned.fill(
+                    child: Container(
+                      color: Colors.black.withOpacity(0.45),
+                    ),
+                  ),
+
+                  Padding(
+                    padding: const EdgeInsets.only(left: 70, top: 100),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          "Plan your trip now",
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        SizedBox(height: 10),
+                      children: [
 
-                        Text(
-                          "Save BIG with our\ncar rental",
-                          style: TextStyle(
-                            fontSize: 34,
-                            fontWeight: FontWeight.bold,
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 15,
+                            vertical: 8,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(25),
+                          ),
+                          child: const Text(
+                            "🚗 Plan Your Trip Now",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
 
-                        SizedBox(height: 10),
+                        const SizedBox(height: 25),
 
-                        Text(
-                          "To contribute to positive change and achieve\nsustainability goals with smarter mobility.",
-                          style: TextStyle(color: Colors.grey),
+                        const Text(
+                          "SAVE BIG\nWITH OUR CAR RENTAL",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 55,
+                            fontWeight: FontWeight.bold,
+                            height: 1.1,
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        const Text(
+                          "Premium cars at affordable prices.\nBook your dream ride today.",
+                          style: TextStyle(
+                            color: Colors.white70,
+                            fontSize: 18,
+                          ),
+                        ),
+
+                        const SizedBox(height: 35),
+
+                        // 🔥 BUTTONS ADDED BACK
+                        Row(
+                          children: [
+
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.orange,
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 18,
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text("Book Ride"),
+                            ),
+
+                            const SizedBox(width: 15),
+
+                            OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                side: const BorderSide(color: Colors.white),
+                                foregroundColor: Colors.white,
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 30,
+                                  vertical: 18,
+                                ),
+                              ),
+                              onPressed: () {},
+                              child: const Text("Learn More"),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-
-                  // RIGHT IMAGE (car mock)
-                  Expanded(
-                    child: Image.network(
-                      "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=900",
-                      height: 220,
-                    ),
-                  ),
                 ],
               ),
+            ),
 
-              const SizedBox(height: 20),
+            const SizedBox(height: 30),
 
-              // ---------------- BUTTONS ----------------
-              Row(
-                children: [
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 12),
-                    ),
-                    onPressed: () {},
-                    child: const Text("Book Ride"),
-                  ),
+            // BOOKING SECTION (UPDATED - SAME AS BEFORE)
+            BookingSection(),
 
-                  const SizedBox(width: 10),
+            const SizedBox(height: 40),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
-                  OutlinedButton(
-                    onPressed: () {},
-                    child: const Text("Learn More"),
-                  ),
-                ],
-              ),
+class BookingSection extends StatefulWidget {
+  const BookingSection({super.key});
 
-              const SizedBox(height: 30),
+  @override
+  State<BookingSection> createState() => _BookingSectionState();
+}
 
-              // ---------------- BOOKING SECTION ----------------
-              Container(
-                padding: const EdgeInsets.all(15),
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+class _BookingSectionState extends State<BookingSection> {
+  String carType = "Select Car Type";
+  String pickupLocation = "Pick-up Location";
+  String dropoffLocation = "Drop-off Location";
+  String pickupDate = "Pick-up Date";
+  String dropoffDate = "Drop-off Date";
+  String pickupTime = "Pick-up Time";
 
-                    const Text(
-                      "Book a Car",
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
+  Future<void> pickDate(Function(String) onSelect) async {
+    DateTime? date = await showDatePicker(
+      context: context,
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2030),
+      initialDate: DateTime.now(),
+    );
 
-                    const SizedBox(height: 15),
+    if (date != null) {
+      onSelect("${date.day}-${date.month}-${date.year}");
+    }
+  }
 
-                    // ROW FIELDS
-                    Row(
-                      children: [
-                        Expanded(
-                          child: dropdownBox("Select Car Type"),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: dropdownBox("Pick-up"),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: dropdownBox("Drop-off"),
-                        ),
-                      ],
-                    ),
+  Future<void> pickTime() async {
+    TimeOfDay? time = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.now(),
+    );
 
-                    const SizedBox(height: 15),
+    if (time != null) {
+      setState(() {
+        pickupTime = time.format(context);
+      });
+    }
+  }
 
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25, vertical: 12),
-                      ),
-                      onPressed: () {},
-                      child: const Text("Search"),
-                    )
-                  ],
-                ),
-              ),
+  Widget box(String text, VoidCallback onTap) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          height: 50,
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          decoration: BoxDecoration(
+            color: Colors.grey.shade100,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(color: Colors.grey.shade300),
+          ),
+          child: Row(
+            children: [
+              Expanded(child: Text(text)),
+              const Icon(Icons.arrow_drop_down),
             ],
           ),
         ),
@@ -181,19 +252,88 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  Widget dropdownBox(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      height: 45,
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Row(
-        children: [
-          Expanded(child: Text(text)),
-          const Icon(Icons.arrow_drop_down),
-        ],
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 25),
+      child: Container(
+        padding: const EdgeInsets.all(25),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.08),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            const Text(
+              "Book a Car",
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            Row(
+              children: [
+                box(carType, () {
+                  setState(() => carType = "SUV Selected");
+                }),
+                const SizedBox(width: 10),
+                box(pickupLocation, () {
+                  setState(() => pickupLocation = "Abbottabad");
+                }),
+                const SizedBox(width: 10),
+                box(dropoffLocation, () {
+                  setState(() => dropoffLocation = "Islamabad");
+                }),
+              ],
+            ),
+
+            const SizedBox(height: 15),
+
+            Row(
+              children: [
+                box(pickupDate, () {
+                  pickDate((value) {
+                    setState(() => pickupDate = value);
+                  });
+                }),
+                const SizedBox(width: 10),
+                box(dropoffDate, () {
+                  pickDate((value) {
+                    setState(() => dropoffDate = value);
+                  });
+                }),
+                const SizedBox(width: 10),
+                box(pickupTime, () {
+                  pickTime();
+                }),
+              ],
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: const Color(0xff1E3C72),
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 30, vertical: 15),
+              ),
+              onPressed: () {},
+              child: const Text("Search Cars"),
+            ),
+          ],
+        ),
       ),
     );
   }
