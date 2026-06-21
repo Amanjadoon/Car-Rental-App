@@ -15,7 +15,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
 
-      // ✅ TOP BAR WITH HOME BUTTON
+      // TOP BAR (UI ONLY HOME BUTTON)
       appBar: AppBar(
         backgroundColor: const Color(0xff1E3C72),
         title: const Text(
@@ -25,14 +25,7 @@ class _LoginPageState extends State<LoginPage> {
 
         leading: IconButton(
           icon: const Icon(Icons.home, color: Colors.white),
-          onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomePage(),
-              ),
-            );
-          },
+          onPressed: () {}, // ❌ NO NAVIGATION (UI ONLY)
         ),
       ),
 
@@ -62,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 const Icon(
                   Icons.directions_car,
                   size: 70,
-                  color: Colors.orange,
+                  color: Color.fromARGB(255, 255, 38, 0),
                 ),
 
                 const SizedBox(height: 10),
@@ -116,23 +109,15 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 25),
 
-                // LOGIN BUTTON
+                // LOGIN BUTTON (UI ONLY)
                 SizedBox(
                   width: double.infinity,
                   height: 50,
                   child: ElevatedButton(
+                    onPressed: () {}, // ❌ NO NAVIGATION
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.orange,
+                      backgroundColor: const Color.fromARGB(221, 255, 8, 0),
                     ),
-                    onPressed: () {
-                      // ✅ LOGIN → HOME PAGE
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomePage(),
-                        ),
-                      );
-                    },
                     child: const Text(
                       "LOGIN",
                       style: TextStyle(color: Colors.white),
@@ -142,7 +127,21 @@ class _LoginPageState extends State<LoginPage> {
 
                 const SizedBox(height: 15),
 
-                const Text("Don't have an account? Sign up"),
+                // SIGNUP BUTTON (UI ONLY)
+                SizedBox(
+                  width: double.infinity,
+                  child: TextButton(
+                    onPressed: () {}, // ❌ NO NAVIGATION
+                    child: const Text(
+                      "Don't have an account? SIGN UP",
+                      style: TextStyle(
+                        color: Color.fromARGB(246, 255, 0, 0),
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+
               ],
             ),
           ),
