@@ -422,7 +422,7 @@ Widget build(BuildContext context) {
 
               mainAxisSpacing: 12,
 
-              childAspectRatio: .95,
+              childAspectRatio: 1.35,
             ),
 
             itemBuilder:
@@ -475,7 +475,7 @@ class _CarCard extends StatelessWidget {
 
             child: Image.network(
               car['image'],
-              height: 80,
+              height: 90,
               width: double.infinity,
               fit: BoxFit.cover,
 
@@ -543,7 +543,7 @@ class _CarCard extends StatelessWidget {
                   style: TextStyle(
                     color: car['color'],
                     fontWeight: FontWeight.bold,
-                    fontSize: 14,
+                    fontSize: 11,
                   ),
                 ),
 
@@ -552,7 +552,7 @@ class _CarCard extends StatelessWidget {
                 Text(
                   "${car['seats']} Seats",
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 9,
                   ),
                 ),
 
@@ -561,7 +561,7 @@ class _CarCard extends StatelessWidget {
                 Text(
                   car['fuel'],
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 9,
                   ),
                 ),
 
@@ -570,7 +570,7 @@ class _CarCard extends StatelessWidget {
                 Text(
                   car['transmission'],
                   style: const TextStyle(
-                    fontSize: 12,
+                    fontSize: 9,
                   ),
                 ),
 
