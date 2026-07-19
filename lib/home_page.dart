@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'cars_page.dart';
 import 'about_page.dart';
 import 'booking_confirmation_page.dart';
+import 'car_details_page.dart';
 
 
 
@@ -1553,6 +1554,7 @@ MaterialPageRoute(
 builder:(_)=>BookingConfirmationPage(
 
 car:car,
+carId: "",
 
 pickup:pickup,
 

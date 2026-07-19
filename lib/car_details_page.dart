@@ -51,11 +51,22 @@ class CarDetailsPage extends StatelessWidget {
                     topRight: Radius.circular(25),
                   ),
                   child: Image.network(
-                    car["image"],
-                    width: double.infinity,
-                    height: 350,
-                    fit: BoxFit.cover,
-                  ),
+  car["image"]?.toString() ?? "",
+  width: double.infinity,
+  height: 350,
+  fit: BoxFit.cover,
+  errorBuilder: (context, error, stackTrace) {
+    return Container(
+      height: 350,
+      color: Colors.grey.shade200,
+      child: const Icon(
+        Icons.directions_car,
+        size: 80,
+        color: Colors.grey,
+      ),
+    );
+  },
+),
                 ),
 
                 Padding(
@@ -72,7 +83,7 @@ class CarDetailsPage extends StatelessWidget {
 
                           Expanded(
                             child: Text(
-                              car["name"],
+                              car["name"] ?.toString()?? "Unknown Car",
                               style: const TextStyle(
                                 fontSize: 34,
                                 fontWeight: FontWeight.bold,
@@ -92,7 +103,7 @@ class CarDetailsPage extends StatelessWidget {
                                   BorderRadius.circular(30),
                             ),
                             child: Text(
-                              "⭐ ${car["rating"]}",
+                              "⭐ ${car["rating"] ?.toString() ?? "0"}",
                               style: const TextStyle(
                                 color: Colors.orange,
                                 fontWeight: FontWeight.bold,
@@ -116,7 +127,7 @@ class CarDetailsPage extends StatelessWidget {
                               BorderRadius.circular(20),
                         ),
                         child: Text(
-                          car["type"],
+                          car["type"] ?.toString()?? "Car",
                           style: const TextStyle(
                             color: Color(0xff1E3C72),
                             fontWeight: FontWeight.bold,
@@ -128,7 +139,7 @@ class CarDetailsPage extends StatelessWidget {
 
                       /// PRICE
                       Text(
-                        "PKR ${car["price"]}/day",
+                        "PKR ${car["price"] ?.toString() ?? "0"}/day",
                         style: const TextStyle(
                           fontSize: 30,
                           fontWeight: FontWeight.bold,
@@ -147,27 +158,57 @@ class CarDetailsPage extends StatelessWidget {
                         crossAxisSpacing: 15,
                         mainAxisSpacing: 15,
                         childAspectRatio: 2,
-                        children: [
+children: [
 
-                          detailCard("Model", car["model"]),
-                          detailCard("Condition", car["condition"]),
-                          detailCard("AC", car["ac"]),
-                          detailCard("Engine", car["engine"]),
-                          detailCard("Fuel", car["fuel"]),
-                          detailCard(
-                              "Transmission",
-                              car["transmission"]),
-                          detailCard(
-                              "Seats",
-                              "${car["seats"]}"),
-                          detailCard(
-                              "Mileage",
-                              car["mileage"]),
-                          detailCard("Color", car["color"]),
-                        ],
+  detailCard(
+    "Model",
+    car["model"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "Condition",
+    car["condition"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "AC",
+    car["ac"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "Engine",
+    car["engine"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "Fuel",
+    car["fuel"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "Transmission",
+    car["transmission"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "Seats",
+    car["seats"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "Mileage",
+    car["mileage"]?.toString() ?? "N/A",
+  ),
+
+  detailCard(
+    "Color",
+    car["color"]?.toString() ?? "N/A",
+  ),
+
+],
                       ),
-
-                      const SizedBox(height: 30),
+                      
+const SizedBox(height: 30),
 
                       /// FEATURES
                       Container(
@@ -195,7 +236,7 @@ class CarDetailsPage extends StatelessWidget {
                             const SizedBox(height: 10),
 
                             Text(
-                              "✓ ${car["features"]}",
+                              "✓ ${car["features"] ?? "No features available"}",
                               style: const TextStyle(
                                 fontSize: 16,
                                 color: Colors.black87,
@@ -229,7 +270,7 @@ class CarDetailsPage extends StatelessWidget {
     MaterialPageRoute(
       builder: (_) => HomePage(
         onLogout: () {},
-        selectedCar: car["name"],
+        selectedCar: car["name"]?.toString() ?? "",
       ),
     ),
   );
@@ -246,6 +287,7 @@ class CarDetailsPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      
                     ],
                   ),
                 ),
@@ -257,7 +299,7 @@ class CarDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget detailCard(String title, String value) {
+  Widget detailCard(String title, dynamic value) {
     return Container(
       padding: const EdgeInsets.all(15),
       decoration: BoxDecoration(
@@ -283,7 +325,7 @@ class CarDetailsPage extends StatelessWidget {
           const SizedBox(height: 6),
 
           Text(
-            value,
+            value.toString(),
             style: const TextStyle(
               color: Colors.grey,
             ),

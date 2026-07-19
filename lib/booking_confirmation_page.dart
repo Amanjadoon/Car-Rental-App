@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class BookingConfirmationPage extends StatefulWidget {
+  final String carId; 
   final String car;
   final String pickup;
   final String dropoff;
@@ -10,6 +11,7 @@ class BookingConfirmationPage extends StatefulWidget {
 
   const BookingConfirmationPage({
     super.key,
+    required this.carId,
     required this.car,
     required this.pickup,
     required this.dropoff,
@@ -68,7 +70,27 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
     'BMW 3 Series': 20000,
     'Audi A4': 22000,
   };
+Future<void> updateCarAvailability() async {
 
+  final query = await FirebaseFirestore.instance
+      .collection("cars")
+      .where("name", isEqualTo: _car)
+      .limit(1)
+      .get();
+
+  if(query.docs.isNotEmpty){
+
+    await query.docs.first.reference.update({
+
+      "available": false,
+
+      "availableUntil": _dropoffDate,
+
+    });
+
+  }
+
+}
   @override
   void initState() {
     super.initState();
@@ -190,10 +212,12 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
 
     setState(() => _isLoading = true);
     await Future.delayed(const Duration(seconds: 2));
-    setState(() {
-      _isLoading = false;
-      _confirmed = true;
-    });
+    await updateCarAvailability();
+
+setState(() {
+  _isLoading = false;
+  _confirmed = true;
+});
   }
 
   @override

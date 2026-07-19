@@ -11,6 +11,37 @@ class CarsPage extends StatefulWidget {
 
 class _CarsPageState extends State<CarsPage> {
   String selectedFilter = "All";
+  Future<void> checkAvailability(DocumentSnapshot doc) async {
+
+  final data = doc.data() as Map<String,dynamic>;
+
+
+  if(data["available"] == false &&
+     data["availableUntil"] != null) {
+
+
+    DateTime until = DateTime.parse(
+      data["availableUntil"],
+    );
+
+
+    if(DateTime.now().isAfter(until)) {
+
+
+      await doc.reference.update({
+
+        "available": true,
+
+        "availableUntil": null,
+
+      });
+
+
+    }
+
+  }
+
+}
 
   final List<String> filters = [
     "All",
@@ -105,13 +136,22 @@ class _CarsPageState extends State<CarsPage> {
                     );
                   }
 
-                  List<Map<String, dynamic>> filteredCars = snapshot
-                      .data!.docs
-                      .map((doc) => doc.data() as Map<String, dynamic>)
-                      .where((car) =>
-                          selectedFilter == "All" ||
-                          car["type"] == selectedFilter)
-                      .toList();
+List<Map<String, dynamic>> filteredCars =
+    snapshot.data!.docs.map((doc) {
+
+  checkAvailability(doc);
+
+  Map<String, dynamic> car =
+      doc.data() as Map<String, dynamic>;
+
+  car["id"] = doc.id;
+
+  return car;
+
+}).where((car) =>
+    selectedFilter == "All" ||
+    car["type"] == selectedFilter
+).toList();
 
                   return Column(
                     children: [
@@ -137,6 +177,7 @@ class _CarsPageState extends State<CarsPage> {
                           ),
                           itemBuilder: (context, index) {
                             final car = filteredCars[index];
+                            bool isAvailable = car["available"] ?? true;
                             return Card(
   elevation: 8,
   shape: RoundedRectangleBorder(
@@ -152,7 +193,7 @@ class _CarsPageState extends State<CarsPage> {
         height: 220,
         width: double.infinity,
         child: Image.network(
-          car["image"],
+          car["image"]?.toString() ?? "",
           fit: BoxFit.cover,
           errorBuilder: (context, error, stackTrace) {
             return Container(
@@ -178,10 +219,37 @@ class _CarsPageState extends State<CarsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+Container(
+  padding: const EdgeInsets.symmetric(
+    horizontal: 10,
+    vertical: 5,
+  ),
 
+  decoration: BoxDecoration(
+    color: isAvailable
+        ? Colors.green
+        : Colors.red,
+
+    borderRadius: BorderRadius.circular(20),
+  ),
+
+  child: Text(
+    isAvailable
+        ? "Available"
+        : "Booked",
+
+    style: const TextStyle(
+      color: Colors.white,
+      fontWeight: FontWeight.bold,
+      fontSize: 12,
+    ),
+  ),
+),
+
+const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    car["name"],
+                    car["name"]?.toString() ?? "Unknown",
                     style: const TextStyle(
                       fontSize: 22,
                       color: Color(0xff1E3C72),
@@ -200,7 +268,7 @@ class _CarsPageState extends State<CarsPage> {
                     borderRadius: BorderRadius.circular(30),
                   ),
                   child: Text(
-                    "⭐ ${car["rating"]}",
+                    "⭐ ${car["rating"]?.toString() ?? "0"}",
                     style: const TextStyle(
                       color: Colors.orange,
                       fontWeight: FontWeight.bold,
@@ -222,7 +290,7 @@ class _CarsPageState extends State<CarsPage> {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Text(
-                car["type"],
+                car["type"]?.toString() ?? "Car",
                 style: const TextStyle(
                   color: Color(0xff1E3C72),
                   fontWeight: FontWeight.bold,
@@ -235,9 +303,9 @@ class _CarsPageState extends State<CarsPage> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("👥 ${car["seats"]} Seats"),
-                Text("⛽ ${car["fuel"]}"),
-                Text("⚙ ${car["transmission"]}"),
+                Text("👥 ${car["seats"]?.toString() ?? "N/A"} Seats"),
+                Text("⛽ ${car["fuel"]?.toString() ?? "N/A"}"),
+                Text("⚙ ${car["transmission"]?.toString() ?? "N/A"}"),
               ],
             ),
 
@@ -252,7 +320,7 @@ class _CarsPageState extends State<CarsPage> {
                   children: [
 
                     Text(
-                      "PKR ${car["price"]}",
+                      "PKR ${car["price"]?.toString() ?? "0"}",
                       style: const TextStyle(
                         fontSize: 25,
                         color: Color(0xff1E3C72),
@@ -269,20 +337,119 @@ class _CarsPageState extends State<CarsPage> {
                   ],
                 ),
 
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xff1E3C72),
+ElevatedButton(
+  style: ElevatedButton.styleFrom(
+    backgroundColor: const Color(0xff1E3C72),
+  ),
+
+  onPressed: () {
+
+    if (!isAvailable) {
+
+ScaffoldMessenger.of(context).showSnackBar(
+
+  SnackBar(
+    behavior: SnackBarBehavior.floating,
+    margin: const EdgeInsets.all(20),
+    duration: const Duration(seconds: 3),
+
+    backgroundColor: Colors.transparent,
+
+    content: Container(
+      padding: const EdgeInsets.all(15),
+
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [
+            Color(0xffD32F2F),
+            Color(0xffFF5252),
+          ],
+        ),
+
+        borderRadius: BorderRadius.circular(18),
+
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.2),
+            blurRadius: 10,
+          ),
+        ],
+      ),
+
+      child: Row(
+        children: [
+
+          Container(
+            padding: const EdgeInsets.all(10),
+
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.2),
+              shape: BoxShape.circle,
+            ),
+
+            child: const Icon(
+              Icons.event_busy,
+              color: Colors.white,
+            ),
+          ),
+
+          const SizedBox(width:15),
+
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+
+              mainAxisSize: MainAxisSize.min,
+
+              children: [
+
+                const Text(
+                  "Car Not Available",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize:16,
+                    fontWeight: FontWeight.bold,
                   ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => CarDetailsPage(
-                          car: car,
-                        ),
-                      ),
-                    );
-                  },
+                ),
+
+                const SizedBox(height:5),
+
+                Text(
+                  "Booked until ${car["availableUntil"]}",
+                  style: const TextStyle(
+                    color: Colors.white70,
+                    fontSize:14,
+                  ),
+                ),
+
+              ],
+            ),
+          ),
+
+        ],
+      ),
+    ),
+  ),
+
+);
+
+      return;
+    }
+
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => CarDetailsPage(
+          car: car,
+        ),
+      ),
+    );
+
+  },
+
+                  
+
                   child: const Text(
                     "View Details",
                     style: TextStyle(
