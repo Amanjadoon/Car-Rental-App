@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "368853424383",
+    "project_id": "car-rental-app-2004",
+    "storage_bucket": "car-rental-app-2004.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:368853424383:android:7de16ddd9f436cc845d4ca",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxAQWG3sBI94omA9OWjisOCeXr5VX7SCg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

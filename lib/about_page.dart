@@ -5,374 +5,1001 @@ class AboutPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
+
       backgroundColor: const Color(0xffF5F7FA),
+
       appBar: AppBar(
+
+        elevation: 0,
+
         flexibleSpace: Container(
+
           decoration: const BoxDecoration(
+
             gradient: LinearGradient(
-              colors: [Color(0xff1E3C72), Color(0xff2A5298)],
+
+              colors:[
+
+                Color(0xff1E3C72),
+
+                Color(0xff2A5298)
+
+              ],
+
             ),
+
           ),
+
         ),
-        title: const Text('About Us', style: TextStyle(color: Colors.white)),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
+
+        title: const Text(
+
+          "About Us",
+
+          style: TextStyle(
+
+            color: Colors.white,
+
+            fontWeight: FontWeight.bold,
+
+          ),
+
         ),
+
+        iconTheme: const IconThemeData(
+
+          color: Colors.white
+
+        ),
+
       ),
+
+
+
       body: SingleChildScrollView(
+
         child: Column(
+
           children: [
-            // Hero banner
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 30),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xff1E3C72), Color(0xff2A5298)],
+
+
+            // ================= TOP BANNER =================
+
+
+            Stack(
+
+              children:[
+
+
+                Image.network(
+
+                  "https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?w=1500",
+
+                  height:320,
+
+                  width:double.infinity,
+
+                  fit:BoxFit.cover,
+
                 ),
-              ),
-              child: Column(
-                children: [
-                  Container(
-                    padding: const EdgeInsets.all(18),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.15),
-                      shape: BoxShape.circle,
-                    ),
-                    child: const Icon(
-                      Icons.directions_car,
-                      size: 55,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  const Text(
-                    'CAR Rental',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: 1.5,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    'Pakistan\'s Most Trusted Car Rental Service',
-                    style: TextStyle(color: Colors.white70, fontSize: 14),
-                    textAlign: TextAlign.center,
-                  ),
-                ],
-              ),
-            ),
 
-            const SizedBox(height: 30),
 
-            // Mission
-            _Section(
-              icon: Icons.flag,
-              title: 'Our Mission',
-              content:
-                  'To provide affordable, reliable, and comfortable car rental services across Pakistan. We believe every journey should be smooth, safe, and memorable — and we\'re here to make that happen.',
-            ),
 
-            // Stats
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Row(
-                children: [
-                  _StatCard(value: '10+', label: 'Years\nExperience'),
-                  const SizedBox(width: 12),
-                  _StatCard(value: '500+', label: 'Cars\nAvailable'),
-                  const SizedBox(width: 12),
-                  _StatCard(value: '50K+', label: 'Happy\nCustomers'),
-                  const SizedBox(width: 12),
-                  _StatCard(value: '13+', label: 'Cities\nCovered'),
-                ],
-              ),
-            ),
+                Container(
 
-            const SizedBox(height: 10),
+                  height:320,
 
-            // Vision
-            _Section(
-              icon: Icons.visibility,
-              title: 'Our Vision',
-              content:
-                  'To become the number one car rental platform in South Asia, connecting travelers to premium vehicles at unbeatable prices through technology and exceptional customer service.',
-            ),
+                  color:Colors.black.withOpacity(.55),
 
-            // Services
-            _Section(
-              icon: Icons.build_circle,
-              title: 'Our Services',
-              content: '',
-              child: Column(
-                children: const [
-                  _ServiceItem(icon: Icons.directions_car, text: 'Self-drive car rental'),
-                  _ServiceItem(icon: Icons.person, text: 'Chauffeur-driven vehicles'),
-                  _ServiceItem(icon: Icons.airplane_ticket, text: 'Airport transfers'),
-                  _ServiceItem(icon: Icons.celebration, text: 'Wedding & event car hire'),
-                  _ServiceItem(icon: Icons.business, text: 'Corporate fleet solutions'),
-                  _ServiceItem(icon: Icons.tour, text: 'Tour packages across Pakistan'),
-                ],
-              ),
-            ),
+                ),
 
-            // Team
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Meet Our Team',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                      color: Color(0xff1E3C72),
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: const [
-                      Expanded(child: _TeamCard(name: 'Ali Hassan', role: 'CEO & Founder', initial: 'A')),
-                      SizedBox(width: 12),
-                      Expanded(child: _TeamCard(name: 'Sara Baig', role: 'Operations Head', initial: 'S')),
-                      SizedBox(width: 12),
-                      Expanded(child: _TeamCard(name: 'Umar Farouk', role: 'Fleet Manager', initial: 'U')),
+
+
+                Positioned.fill(
+
+                  child:Column(
+
+                    mainAxisAlignment:
+
+                    MainAxisAlignment.center,
+
+                    children:[
+
+
+                      const Text(
+
+                        "About CAR Rental",
+
+                        style:TextStyle(
+
+                          color:Colors.white,
+
+                          fontSize:38,
+
+                          fontWeight:FontWeight.bold,
+
+                        ),
+
+                      ),
+
+
+
+                      const SizedBox(height:12),
+
+
+
+                      const Text(
+
+                        "Your trusted travel partner across Pakistan",
+
+                        style:TextStyle(
+
+                          color:Colors.white70,
+
+                          fontSize:17,
+
+                        ),
+
+                      ),
+
+
                     ],
+
                   ),
-                ],
-              ),
+
+                )
+
+
+              ],
+
             ),
 
-            const SizedBox(height: 30),
 
-            // Contact
-            Container(
-              margin: const EdgeInsets.symmetric(horizontal: 20),
-              padding: const EdgeInsets.all(24),
-              decoration: BoxDecoration(
-                color: const Color(0xff1E3C72),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: Column(
-                children: [
+
+            const SizedBox(height:50),
+
+
+
+
+            // ================= COMPANY SECTION =================
+
+
+
+            Padding(
+
+              padding:
+              const EdgeInsets.symmetric(horizontal:25),
+
+
+              child:Column(
+
+                children:[
+
+
                   const Text(
-                    'Get In Touch',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
+
+                    "Who We Are",
+
+                    style:TextStyle(
+
+                      fontSize:30,
+
+                      fontWeight:FontWeight.bold,
+
+                      color:Color(0xff1E3C72),
+
                     ),
+
                   ),
-                  const SizedBox(height: 16),
-                  _ContactRow(icon: Icons.phone, text: '+92 300 1234567'),
-                  const SizedBox(height: 10),
-                  _ContactRow(icon: Icons.email, text: 'info@carrental.pk'),
-                  const SizedBox(height: 10),
-                  _ContactRow(icon: Icons.location_on, text: 'Blue Area, Islamabad, Pakistan'),
+
+
+
+                  const SizedBox(height:25),
+
+
+
+                  Container(
+
+
+                    padding:
+                    const EdgeInsets.all(20),
+
+
+
+                    decoration:BoxDecoration(
+
+                      color:Colors.white,
+
+                      borderRadius:
+                      BorderRadius.circular(25),
+
+
+                      boxShadow:[
+
+                        BoxShadow(
+
+                          color:Colors.black12,
+
+                          blurRadius:12,
+
+                          offset:
+                          const Offset(0,5),
+
+                        )
+
+                      ],
+
+                    ),
+
+
+
+                    child:LayoutBuilder(
+
+                      builder:(context,constraints){
+
+
+                        if(constraints.maxWidth > 600){
+
+
+                          return Row(
+
+                            children:[
+
+
+
+                              Expanded(
+
+                                child:ClipRRect(
+
+                                  borderRadius:
+                                  BorderRadius.circular(20),
+
+
+                                  child:Image.network(
+
+
+                                    "https://images.unsplash.com/photo-1542362567-b07e54358753?w=1200",
+
+
+                                    height:260,
+
+
+                                    fit:BoxFit.cover,
+
+
+                                  ),
+
+                                ),
+
+                              ),
+
+
+
+
+                              const SizedBox(width:30),
+
+
+
+
+                              Expanded(
+
+                                child:_companyText(),
+
+                              )
+
+
+                            ],
+
+                          );
+
+
+                        }
+
+
+
+                        else{
+
+
+                          return Column(
+
+                            children:[
+
+
+
+                              ClipRRect(
+
+                                borderRadius:
+                                BorderRadius.circular(20),
+
+
+                                child:Image.network(
+
+                                  "https://images.unsplash.com/photo-1542362567-b07e54358753?w=1200",
+
+                                  height:220,
+
+                                  width:double.infinity,
+
+                                  fit:BoxFit.cover,
+
+                                ),
+
+                              ),
+
+
+
+                              const SizedBox(height:25),
+
+
+
+                              _companyText(),
+
+                            ],
+
+                          );
+
+
+                        }
+
+                      },
+
+                    ),
+
+                  )
+
+
                 ],
+
               ),
+
             ),
 
-            const SizedBox(height: 30),
-          ],
-        ),
-      ),
-    );
-  }
-}
 
-class _Section extends StatelessWidget {
-  final IconData icon;
-  final String title;
-  final String content;
-  final Widget? child;
 
-  const _Section({
-    required this.icon,
-    required this.title,
-    required this.content,
-    this.child,
-  });
+            const SizedBox(height:50),
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-      padding: const EdgeInsets.all(20),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 12,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              Icon(icon, color: const Color(0xff1E3C72), size: 24),
-              const SizedBox(width: 10),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xff1E3C72),
+
+
+
+            // ================= SERVICES =================
+
+
+
+            const Text(
+
+              "Our Services",
+
+              style:TextStyle(
+
+                color:Color(0xff1E3C72),
+
+                fontSize:30,
+
+                fontWeight:FontWeight.bold,
+
+              ),
+
+            ),
+
+
+
+            const SizedBox(height:25),
+
+
+
+            serviceCard(
+
+              Icons.directions_car,
+
+              "Self Drive Rental",
+
+              "Choose your favorite car and enjoy complete freedom with our well-maintained rental vehicles."
+
+            ),
+
+
+
+            serviceCard(
+
+              Icons.person,
+
+              "Chauffeur Service",
+
+              "Professional drivers available for comfortable and stress-free travelling."
+
+            ),
+
+
+
+            serviceCard(
+
+              Icons.flight,
+
+              "Airport Transfers",
+
+              "Reliable pickup and drop services for airports with punctual and comfortable rides."
+
+            ),
+            serviceCard(
+
+              Icons.business,
+
+              "Corporate Rentals",
+
+              "Special rental solutions for companies, meetings and business travel."
+
+            ),
+
+
+
+            serviceCard(
+
+              Icons.event,
+
+              "Event & Wedding Cars",
+
+              "Premium vehicles available for weddings, events and special occasions."
+
+            ),
+
+
+
+
+            const SizedBox(height:40),
+
+
+
+
+            // ================= CONTACT =================
+
+
+
+            Container(
+
+              margin:
+              const EdgeInsets.all(25),
+
+
+              padding:
+              const EdgeInsets.all(30),
+
+
+
+              decoration:BoxDecoration(
+
+
+                gradient:
+                const LinearGradient(
+
+
+                  colors:[
+
+                    Color(0xff1E3C72),
+
+                    Color(0xff2A5298)
+
+                  ],
+
                 ),
+
+
+
+                borderRadius:
+                BorderRadius.circular(25),
+
+
               ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          if (content.isNotEmpty)
-            Text(
-              content,
-              style: const TextStyle(color: Colors.grey, fontSize: 14, height: 1.6),
-            ),
-          if (child != null) child!,
-        ],
-      ),
-    );
-  }
-}
 
-class _ServiceItem extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  const _ServiceItem({required this.icon, required this.text});
 
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
-      child: Row(
-        children: [
-          Icon(icon, color: Colors.orange, size: 20),
-          const SizedBox(width: 12),
-          Text(text, style: const TextStyle(fontSize: 14, color: Colors.black87)),
-        ],
-      ),
-    );
-  }
-}
 
-class _StatCard extends StatelessWidget {
-  final String value;
-  final String label;
-  const _StatCard({required this.value, required this.label});
+              child:Column(
 
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 8),
-        decoration: BoxDecoration(
-          color: const Color(0xff1E3C72),
-          borderRadius: BorderRadius.circular(14),
-        ),
-        child: Column(
-          children: [
-            Text(
-              value,
-              style: const TextStyle(
-                color: Colors.orange,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
+                children:[
+
+
+
+                  const Text(
+
+                    "Get In Touch",
+
+                    style:TextStyle(
+
+                      color:Colors.white,
+
+                      fontSize:28,
+
+                      fontWeight:FontWeight.bold,
+
+                    ),
+
+                  ),
+
+
+
+                  const SizedBox(height:20),
+
+
+
+
+                  contact(
+
+                    Icons.location_on,
+
+                    "Abbottabad, Pakistan",
+
+                  ),
+
+
+
+                  contact(
+
+                    Icons.phone,
+
+                    "+92 300 1234567",
+
+                  ),
+
+
+
+                  contact(
+
+                    Icons.email,
+
+                    "info@carrental.pk",
+
+                  ),
+
+
+
+                ],
+
               ),
+
             ),
-            const SizedBox(height: 4),
-            Text(
-              label,
-              style: const TextStyle(color: Colors.white70, fontSize: 11),
-              textAlign: TextAlign.center,
-            ),
+
+
+
+            const SizedBox(height:30),
+
+
           ],
+
         ),
+
       ),
+
     );
+
   }
+
+
+
+
+
+
+
+// ================= COMPANY TEXT =================
+
+
+Widget _companyText(){
+
+
+return Column(
+
+crossAxisAlignment:
+CrossAxisAlignment.start,
+
+
+children:[
+
+
+
+const Text(
+
+"Pakistan's Trusted Car Rental Company",
+
+style:TextStyle(
+
+fontSize:24,
+
+fontWeight:FontWeight.bold,
+
+color:Color(0xff1E3C72),
+
+),
+
+),
+
+
+
+const SizedBox(height:15),
+
+
+
+
+const Text(
+
+"CAR Rental provides reliable, affordable and comfortable "
+"vehicles for every journey. We offer economy cars, SUVs "
+"and luxury vehicles for family trips, business travel "
+"and daily use.",
+
+
+style:TextStyle(
+
+color:Colors.grey,
+
+fontSize:15,
+
+height:1.7,
+
+),
+
+),
+
+
+
+
+const SizedBox(height:15),
+
+
+
+
+const Text(
+
+"Our mission is to provide safe, clean and well-maintained "
+"cars with excellent customer support across Pakistan.",
+
+
+style:TextStyle(
+
+color:Colors.grey,
+
+fontSize:15,
+
+height:1.7,
+
+),
+
+),
+
+
+
+
+const SizedBox(height:20),
+
+
+
+
+Row(
+
+children:[
+
+
+_companyStat("500+","Cars"),
+
+
+const SizedBox(width:25),
+
+
+_companyStat("20K+","Customers"),
+
+
+const SizedBox(width:25),
+
+
+_companyStat("13+","Cities"),
+
+
+
+],
+
+)
+
+
+],
+
+);
+
 }
 
-class _TeamCard extends StatelessWidget {
-  final String name;
-  final String role;
-  final String initial;
-  const _TeamCard({required this.name, required this.role, required this.initial});
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          CircleAvatar(
-            radius: 28,
-            backgroundColor: const Color(0xff1E3C72).withOpacity(0.15),
-            child: Text(
-              initial,
-              style: const TextStyle(
-                color: Color(0xff1E3C72),
-                fontWeight: FontWeight.bold,
-                fontSize: 22,
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            name,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-            textAlign: TextAlign.center,
-          ),
-          const SizedBox(height: 4),
-          Text(
-            role,
-            style: const TextStyle(color: Colors.grey, fontSize: 11),
-            textAlign: TextAlign.center,
-          ),
-        ],
-      ),
-    );
-  }
+
+
+
+
+Widget _companyStat(String number,String title){
+
+
+return Column(
+
+crossAxisAlignment:
+CrossAxisAlignment.start,
+
+
+children:[
+
+
+Text(
+
+number,
+
+style:const TextStyle(
+
+color:Color(0xffFF9800),
+
+fontSize:22,
+
+fontWeight:FontWeight.bold,
+
+),
+
+),
+
+
+
+Text(
+
+title,
+
+style:const TextStyle(
+
+color:Colors.grey,
+
+fontSize:13,
+
+),
+
+),
+
+
+
+],
+
+);
+
 }
 
-class _ContactRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-  const _ContactRow({required this.icon, required this.text});
 
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Icon(icon, color: Colors.orange, size: 18),
-        const SizedBox(width: 12),
-        Expanded(
-          child: Text(
-            text,
-            style: const TextStyle(color: Colors.white70, fontSize: 14),
-          ),
-        ),
-      ],
-    );
-  }
+
+
+
+
+
+// ================= SERVICE CARD =================
+
+
+Widget serviceCard(
+
+IconData icon,
+
+String title,
+
+String text,
+
+){
+
+
+return Container(
+
+
+margin:
+const EdgeInsets.symmetric(
+
+horizontal:25,
+
+vertical:8,
+
+),
+
+
+
+padding:
+const EdgeInsets.all(20),
+
+
+
+decoration:BoxDecoration(
+
+color:Colors.white,
+
+borderRadius:
+BorderRadius.circular(20),
+
+
+
+boxShadow:[
+
+
+BoxShadow(
+
+color:Colors.black12,
+
+blurRadius:10,
+
+offset:
+const Offset(0,4),
+
+)
+
+]
+
+
+),
+
+
+
+child:Row(
+
+children:[
+
+
+
+CircleAvatar(
+
+radius:28,
+
+
+backgroundColor:
+const Color(0xffE8F0FE),
+
+
+child:Icon(
+
+icon,
+
+color:Color(0xff1E3C72),
+
+),
+
+),
+
+
+
+
+const SizedBox(width:20),
+
+
+
+
+Expanded(
+
+child:Column(
+
+crossAxisAlignment:
+CrossAxisAlignment.start,
+
+
+children:[
+
+
+
+Text(
+
+title,
+
+style:const TextStyle(
+
+fontSize:18,
+
+fontWeight:FontWeight.bold,
+
+color:Color(0xff1E3C72),
+
+),
+
+),
+
+
+
+const SizedBox(height:6),
+
+
+
+
+Text(
+
+text,
+
+style:const TextStyle(
+
+color:Colors.grey,
+
+height:1.5,
+
+),
+
+),
+
+
+
+],
+
+),
+
+),
+
+
+
+],
+
+),
+
+);
+
+}
+
+
+
+
+
+
+
+// ================= CONTACT ROW =================
+
+
+Widget contact(
+
+IconData icon,
+
+String text,
+
+){
+
+
+return Padding(
+
+padding:
+const EdgeInsets.symmetric(vertical:8),
+
+
+child:Row(
+
+children:[
+
+
+
+Icon(
+
+icon,
+
+color:Colors.orange,
+
+),
+
+
+
+
+const SizedBox(width:15),
+
+
+
+
+Text(
+
+text,
+
+style:const TextStyle(
+
+color:Colors.white,
+
+fontSize:16,
+
+),
+
+),
+
+
+
+],
+
+),
+
+);
+
+
+}
+
 }

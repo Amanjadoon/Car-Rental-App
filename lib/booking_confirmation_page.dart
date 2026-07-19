@@ -216,15 +216,39 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: _confirmed ? _buildSuccessScreen() : _buildBookingForm(),
+      body: Center(
+  child: ConstrainedBox(
+    constraints: const BoxConstraints(
+      maxWidth: 650,
+    ),
+    child: _confirmed
+        ? _buildSuccessScreen()
+        : _buildBookingForm(),
+  ),
+),
     );
   }
 
   // ── BOOKING FORM ──
   Widget _buildBookingForm() {
-    return SingleChildScrollView(
-      padding: const EdgeInsets.all(20),
+    return Center(
+  child: SingleChildScrollView(
+    padding: const EdgeInsets.all(40),
+    child: Container(
+      width: 550,
+      padding: const EdgeInsets.all(30),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: const [
+          BoxShadow(
+            blurRadius: 20,
+            color: Colors.black12,
+          ),
+        ],
+      ),
       child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Summary card
           Container(
@@ -258,7 +282,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   icon: Icons.directions_car,
                   label: 'Car',
                   value: _car,
-                  onTap: _selectCar,
+                  onTap: () {},
                 ),
                 const SizedBox(height: 14),
 
@@ -268,10 +292,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   label: 'Pick-up Location',
                   value: _pickup.isEmpty ? 'Tap to select' : _pickup,
                   isEmpty: _pickup.isEmpty,
-                  onTap: () => _pickLocation(
-                    'Pick-up Location',
-                    (v) => setState(() => _pickup = v),
-                  ),
+                  onTap: () {},
                 ),
                 const SizedBox(height: 14),
 
@@ -281,10 +302,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   label: 'Drop-off Location',
                   value: _dropoff.isEmpty ? 'Tap to select' : _dropoff,
                   isEmpty: _dropoff.isEmpty,
-                  onTap: () => _pickLocation(
-                    'Drop-off Location',
-                    (v) => setState(() => _dropoff = v),
-                  ),
+                  onTap: () {},
                 ),
                 const SizedBox(height: 14),
 
@@ -294,18 +312,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   label: 'Pick-up Date',
                   value: _pickupDate.isEmpty ? 'Tap to select' : _pickupDate,
                   isEmpty: _pickupDate.isEmpty,
-                  onTap: () async {
-                    final d = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2030),
-                    );
-                    if (d != null) {
-                      setState(() =>
-                          _pickupDate = '${d.day}-${d.month}-${d.year}');
-                    }
-                  },
+                  onTap: () {},
                 ),
                 const SizedBox(height: 14),
 
@@ -315,18 +322,7 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                   label: 'Drop-off Date',
                   value: _dropoffDate.isEmpty ? 'Tap to select' : _dropoffDate,
                   isEmpty: _dropoffDate.isEmpty,
-                  onTap: () async {
-                    final d = await showDatePicker(
-                      context: context,
-                      initialDate: DateTime.now(),
-                      firstDate: DateTime.now(),
-                      lastDate: DateTime(2030),
-                    );
-                    if (d != null) {
-                      setState(() =>
-                          _dropoffDate = '${d.day}-${d.month}-${d.year}');
-                    }
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
@@ -416,12 +412,15 @@ class _BookingConfirmationPageState extends State<BookingConfirmationPage> {
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1),
-                    ),
+               ),
+              ),
             ),
+           ],
           ),
-        ],
-      ),
-    );
+         ),
+       ),
+     
+   );
   }
 
   Widget _priceRow(String label, String value) {

@@ -1,454 +1,898 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
+
   final Function(String email) onLoginSuccess;
 
-  const LoginPage({super.key, required this.onLoginSuccess});
+
+  const LoginPage({
+    super.key,
+    required this.onLoginSuccess,
+  });
+
 
   @override
   State<LoginPage> createState() => _LoginPageState();
+
 }
 
+
+
 class _LoginPageState extends State<LoginPage> {
-  bool _isHidden = true;
-  bool _isLoading = false;
-  bool _isSignUp = false;
 
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  final _nameController = TextEditingController();
+final FirebaseAuth auth = FirebaseAuth.instance;
+  bool isHidden = true;
+  bool isLoading = false;
+  bool isSignUp = false;
 
-  final Map<String, String> _demoUsers = {
-    'admin@gmail.com': '123456',
-    'user@gmail.com': 'password',
-  };
 
-  void _submit() async {
-    final email = _emailController.text.trim();
-    final password = _passwordController.text.trim();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final nameController = TextEditingController();
 
-    if (email.isEmpty || password.isEmpty) {
-      _showSnack('Please fill all fields', Colors.red);
-      return;
-    }
+  bool validEmail(String email){
 
-    setState(() => _isLoading = true);
+    return RegExp(
+      r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$'
+    ).hasMatch(email);
 
-    await Future.delayed(const Duration(seconds: 1));
-
-    setState(() => _isLoading = false);
-
-    if (_isSignUp) {
-      _showSnack('Account created successfully', Colors.green);
-      widget.onLoginSuccess(email);
-      Navigator.pop(context);
-    } else {
-      if (_demoUsers.containsKey(email) &&
-          _demoUsers[email] == password) {
-        _showSnack('Welcome back!', Colors.green);
-        widget.onLoginSuccess(email);
-        Navigator.pop(context);
-      } else {
-        _showSnack('Invalid email or password', Colors.red);
-      }
-    }
   }
 
-  void _showSnack(String msg, Color color) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(msg),
-        backgroundColor: color,
-      ),
-    );
-  }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xffF5F7FA),
 
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          _isSignUp ? "Create Account" : "Login",
-          style: const TextStyle(color: Colors.white),
-        ),
-        iconTheme: const IconThemeData(color: Colors.white),
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Color(0xff1E3C72),
-                Color(0xff2A5298),
-              ],
+
+  void showMessage(
+      String title,
+      String text,
+      Color color,
+      IconData icon
+      ){
+
+    showDialog(
+
+      context: context,
+
+      builder:(context){
+
+        return AlertDialog(
+
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(25),
+          ),
+
+
+          title: Row(
+
+            children:[
+
+              Icon(
+                icon,
+                color: color,
+              ),
+
+              const SizedBox(width:10),
+
+              Expanded(
+                child: Text(
+                  title,
+                  style: TextStyle(
+                    color:color,
+                    fontWeight:FontWeight.bold,
+                  ),
+                ),
+              )
+
+            ],
+
+          ),
+
+
+          content: Text(
+            text,
+            style: const TextStyle(
+              fontSize:16,
             ),
           ),
+
+
+          actions:[
+
+            ElevatedButton(
+
+              style:ElevatedButton.styleFrom(
+                backgroundColor:color,
+              ),
+
+              onPressed:(){
+
+                Navigator.pop(context);
+
+              },
+
+              child:const Text(
+                "OK",
+                style:TextStyle(
+                  color:Colors.white,
+                ),
+              ),
+
+            )
+
+          ],
+
+
+        );
+
+      },
+
+    );
+
+  }
+    void submit() async {
+
+
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String name = nameController.text.trim();
+
+
+
+    if(isSignUp && name.isEmpty){
+
+      showMessage(
+        "Name Required",
+        "Please enter your full name.",
+        Colors.orange,
+        Icons.person,
+      );
+
+      return;
+
+    }
+
+
+
+
+    if(email.isEmpty){
+
+      showMessage(
+        "Email Required",
+        "Please enter your email address.",
+        Colors.orange,
+        Icons.email,
+      );
+
+      return;
+
+    }
+
+
+
+
+    if(!validEmail(email)){
+
+
+      showMessage(
+        "Invalid Email",
+        "Please enter a valid email address.",
+        Colors.red,
+        Icons.error,
+      );
+
+      return;
+
+    }
+
+
+
+
+    if(password.length < 8){
+
+
+      showMessage(
+        "Weak Password",
+        "Password must be minimum 8 characters long.",
+        Colors.red,
+        Icons.lock,
+      );
+
+      return;
+
+    }
+
+
+
+
+    setState((){
+
+      isLoading = true;
+
+    });
+
+
+
+    await Future.delayed(
+      const Duration(seconds:1),
+    );
+
+
+
+    setState((){
+
+      isLoading = false;
+
+    });
+
+
+
+
+
+try {
+
+  if(isSignUp){
+
+    UserCredential user =
+        await auth.createUserWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+
+    showMessage(
+      "Account Created",
+      "Your account has been created successfully.",
+      Colors.green,
+      Icons.check_circle,
+    );
+
+
+    widget.onLoginSuccess(user.user!.email!);
+
+
+  }
+
+  else{
+
+
+    UserCredential user =
+        await auth.signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    );
+
+
+    showMessage(
+      "Login Successful",
+      "Welcome back!",
+      Colors.green,
+      Icons.login,
+    );
+
+
+    widget.onLoginSuccess(user.user!.email!);
+
+
+  }
+
+
+
+  Future.delayed(
+    const Duration(seconds:1),
+    (){
+      Navigator.pop(context);
+    },
+  );
+
+
+}
+
+
+on FirebaseAuthException catch(e){
+
+
+  String message="Something went wrong";
+
+
+  if(e.code=="email-already-in-use"){
+
+    message="This email is already registered.";
+
+  }
+
+  else if(e.code=="user-not-found"){
+
+    message="No account found with this email.";
+
+  }
+
+  else if(e.code=="wrong-password"){
+
+    message="Incorrect password.";
+
+  }
+
+  else if(e.code=="invalid-email"){
+
+    message="Invalid email address.";
+
+  }
+
+
+  showMessage(
+    "Authentication Failed",
+    message,
+    Colors.red,
+    Icons.error,
+  );
+
+
+}
+
+
+  }
+  @override
+Widget build(BuildContext context) {
+
+  return Scaffold(
+
+    body: Container(
+
+      decoration: const BoxDecoration(
+
+        gradient: LinearGradient(
+
+          colors:[
+            Color.fromARGB(255, 252, 252, 252),
+            Color.fromARGB(255, 252, 252, 252),
+          ],
+
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+
         ),
+
       ),
 
-      body: Center(
+
+
+      child: Center(
+
         child: SingleChildScrollView(
+
           child: Container(
-            width: 380,
-            margin: const EdgeInsets.all(20),
 
-            padding: const EdgeInsets.all(25),
+            width:380,
 
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(25),
+            margin:const EdgeInsets.all(20),
 
-              boxShadow: [
+
+            padding:const EdgeInsets.all(25),
+
+
+
+            decoration:BoxDecoration(
+
+              color:Colors.white,
+
+              borderRadius:BorderRadius.circular(30),
+
+
+              boxShadow:[
+
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.12),
-                  blurRadius: 25,
-                  offset: const Offset(0, 10),
+
+                  color:Colors.black.withOpacity(0.25),
+
+                  blurRadius:25,
+
+                  offset:const Offset(0,15),
+
                 )
+
               ],
+
             ),
 
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
+
+
+            child:Column(
+
+              mainAxisSize:MainAxisSize.min,
+
+              children:[
+
+
 
                 Container(
-                  height: 90,
-                  width: 90,
 
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+                  height:100,
 
-                    gradient: const LinearGradient(
-                      colors: [
+                  width:100,
+
+
+                  decoration:BoxDecoration(
+
+                    shape:BoxShape.circle,
+
+
+                    gradient:const LinearGradient(
+
+                      colors:[
+
                         Color(0xff1E3C72),
                         Color(0xff2A5298),
+
                       ],
+
                     ),
 
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.blue.withOpacity(0.3),
-                        blurRadius: 15,
-                      )
-                    ],
+
                   ),
 
-                  child: const Icon(
-                    Icons.directions_car_filled,
-                    size: 45,
-                    color: Colors.white,
+
+
+                  child:const Icon(
+
+                    Icons.directions_car,
+
+                    color:Colors.white,
+
+                    size:55,
+
                   ),
+
                 ),
 
 
-                const SizedBox(height: 20),
+
+
+                const SizedBox(height:25),
+
+
 
 
                 Text(
-                  _isSignUp
-                      ? "Create Your Account"
-                      : "Welcome Back!",
-                  style: const TextStyle(
-                    fontSize: 26,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xff1E3C72),
+
+                  isSignUp
+
+                  ?"Create Account"
+
+                  :"Welcome Back",
+
+
+
+                  style:const TextStyle(
+
+                    fontSize:28,
+
+                    fontWeight:FontWeight.bold,
+
+                    color:Color(0xff1E3C72),
+
                   ),
+
                 ),
 
 
-                const SizedBox(height: 8),
+
+
+                const SizedBox(height:8),
+
+
 
 
                 Text(
-                  _isSignUp
-                      ? "Register to book your favorite cars"
-                      : "Login to manage your bookings",
-                  style: const TextStyle(
-                    color: Colors.grey,
+
+                  isSignUp
+
+                  ?"Register to book your favorite cars"
+
+                  :"Login to manage your bookings",
+
+
+
+                  style:const TextStyle(
+
+                    color:Colors.grey,
+
                   ),
+
                 ),
 
 
-                const SizedBox(height: 30),
 
 
-                if (_isSignUp) ...[
-                  _field(
-                    _nameController,
-                    "Full Name",
-                    Icons.person_outline,
-                  ),
-
-                  const SizedBox(height: 15),
-                ],
+                const SizedBox(height:30),
 
 
-                _field(
-                  _emailController,
+
+
+                if(isSignUp)
+
+                _input(
+
+                  nameController,
+
+                  "Full Name",
+
+                  Icons.person,
+
+                ),
+
+
+
+                if(isSignUp)
+
+                const SizedBox(height:15),
+
+
+
+
+                _input(
+
+                  emailController,
+
                   "Email Address",
-                  Icons.email_outlined,
+
+                  Icons.email,
+
                 ),
 
 
-                const SizedBox(height: 15),
-                                TextField(
-                  controller: _passwordController,
-                  obscureText: _isHidden,
 
-                  decoration: InputDecoration(
 
-                    labelText: "Password",
+                const SizedBox(height:15),
 
-                    prefixIcon: const Icon(
-                      Icons.lock_outline,
-                      color: Color(0xff1E3C72),
+
+
+
+
+                TextField(
+
+                  controller:passwordController,
+
+                  obscureText:isHidden,
+
+
+
+                  decoration:InputDecoration(
+
+                    labelText:"Password",
+
+
+
+                    prefixIcon:const Icon(
+
+                      Icons.lock,
+
+                      color:Color(0xff1E3C72),
+
                     ),
 
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isHidden
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                        color: Colors.grey,
+
+
+                    suffixIcon:IconButton(
+
+                      icon:Icon(
+
+                        isHidden
+
+                        ?Icons.visibility_off
+
+                        :Icons.visibility,
+
                       ),
 
-                      onPressed: () {
-                        setState(() {
-                          _isHidden = !_isHidden;
+
+
+                      onPressed:(){
+
+                        setState((){
+
+                          isHidden=!isHidden;
+
                         });
+
                       },
+
                     ),
 
-                    filled: true,
-                    fillColor: const Color(0xffF8F9FC),
 
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
-                      borderSide: BorderSide.none,
+
+
+                    filled:true,
+
+                    fillColor:const Color(0xffF5F7FA),
+
+
+
+
+                    border:OutlineInputBorder(
+
+                      borderRadius:BorderRadius.circular(18),
+
+                      borderSide:BorderSide.none,
+
                     ),
 
-                    focusedBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
 
-                      borderSide: const BorderSide(
-                        color: Color(0xff1E3C72),
-                        width: 2,
-                      ),
-                    ),
+
                   ),
+
                 ),
 
 
-                const SizedBox(height: 20),
 
 
-                if (!_isSignUp)
-                  Align(
-                    alignment: Alignment.centerRight,
-
-                    child: TextButton(
-                      onPressed: () {
-                        _showSnack(
-                          "Demo: admin@gmail.com / 123456",
-                          const Color(0xff1E3C72),
-                        );
-                      },
-
-                      child: const Text(
-                        "Forgot Password?",
-                        style: TextStyle(
-                          color: Color(0xff1E3C72),
-                        ),
-                      ),
-                    ),
-                  ),
+                const SizedBox(height:25),
 
 
-                const SizedBox(height: 15),
 
 
                 SizedBox(
-                  width: double.infinity,
-                  height: 55,
 
-                  child: ElevatedButton(
+                  height:55,
+
+                  width:double.infinity,
+
+
+
+                  child:ElevatedButton(
 
                     onPressed:
-                        _isLoading ? null : _submit,
 
-                    style: ElevatedButton.styleFrom(
+                    isLoading
 
-                      elevation: 5,
+                    ?null
+
+                    :submit,
+
+
+
+                    style:ElevatedButton.styleFrom(
 
                       backgroundColor:
-                          const Color(0xff1E3C72),
 
-                      shape: RoundedRectangleBorder(
-                        borderRadius:
-                            BorderRadius.circular(15),
+                      const Color(0xff1E3C72),
+
+
+
+                      shape:RoundedRectangleBorder(
+
+                        borderRadius:BorderRadius.circular(18),
+
                       ),
+
                     ),
 
 
-                    child: _isLoading
 
-                        ? const CircularProgressIndicator(
-                            color: Colors.white,
-                          )
 
-                        : Text(
+                    child:isLoading
 
-                            _isSignUp
-                                ? "CREATE ACCOUNT"
-                                : "LOGIN",
 
-                            style: const TextStyle(
+                    ?const CircularProgressIndicator(
 
-                              color: Colors.white,
+                      color:Colors.white,
 
-                              fontSize: 16,
+                    )
 
-                              fontWeight:
-                                  FontWeight.bold,
 
-                              letterSpacing: 1,
-                            ),
-                          ),
+                    :Text(
+
+                      isSignUp
+
+                      ?"CREATE ACCOUNT"
+
+                      :"LOGIN",
+
+
+
+                      style:const TextStyle(
+
+                        color:Colors.white,
+
+                        fontWeight:FontWeight.bold,
+
+                        fontSize:16,
+
+                      ),
+
+                    ),
+
                   ),
+
                 ),
 
 
-                const SizedBox(height: 20),
+
+
+                const SizedBox(height:20),
+
+
+
 
 
                 GestureDetector(
 
-                  onTap: () {
+                  onTap:(){
 
-                    setState(() {
 
-                      _isSignUp = !_isSignUp;
+                    setState((){
 
-                      _emailController.clear();
+                      isSignUp=!isSignUp;
 
-                      _passwordController.clear();
 
-                      _nameController.clear();
+                      emailController.clear();
+
+                      passwordController.clear();
+
+                      nameController.clear();
+
 
                     });
+
+
                   },
 
 
-                  child: RichText(
+                  child:RichText(
 
-                    text: TextSpan(
+                    text:TextSpan(
 
-                      children: [
-
-                        TextSpan(
-
-                          text: _isSignUp
-                              ? "Already have account? "
-                              : "Don't have account? ",
-
-                          style: const TextStyle(
-                            color: Colors.grey,
-                          ),
-                        ),
+                      children:[
 
 
                         TextSpan(
 
-                          text: _isSignUp
-                              ? "LOGIN"
-                              : "SIGN UP",
+                          text:isSignUp
 
-                          style: const TextStyle(
+                          ?"Already have account? "
 
-                            color:
-                                Color(0xff1E3C72),
+                          :"Don't have account? ",
 
-                            fontWeight:
-                                FontWeight.bold,
+
+                          style:const TextStyle(
+
+                            color:Colors.grey,
+
                           ),
+
                         ),
+
+
+
+                        TextSpan(
+
+                          text:isSignUp
+
+                          ?"LOGIN"
+
+                          :"SIGN UP",
+
+
+                          style:const TextStyle(
+
+                            color:Color(0xff1E3C72),
+
+                            fontWeight:FontWeight.bold,
+
+                          ),
+
+                        )
+
+
                       ],
+
                     ),
+
                   ),
-                ),
+
+                )
+
               ],
+
             ),
+
           ),
+
         ),
+
       ),
-    );
-  }
+
+    ),
+
+  );
+
+}
+Widget _input(
+
+    TextEditingController controller,
+
+    String text,
+
+    IconData icon,
+
+){
+
+  return TextField(
+
+    controller:controller,
 
 
-  Widget _field(
-      TextEditingController controller,
-      String label,
-      IconData icon,
-      ) {
+    decoration:InputDecoration(
 
-    return TextField(
-
-      controller: controller,
-
-      decoration: InputDecoration(
-
-        labelText: label,
-
-        prefixIcon: Icon(
-          icon,
-          color: Color(0xff1E3C72),
-        ),
-
-        filled: true,
-
-        fillColor:
-            const Color(0xffF8F9FC),
+      labelText:text,
 
 
-        border: OutlineInputBorder(
+      prefixIcon:Icon(
 
-          borderRadius:
-              BorderRadius.circular(15),
+        icon,
 
-          borderSide: BorderSide.none,
-        ),
+        color:const Color(0xff1E3C72),
 
-
-        focusedBorder:
-            OutlineInputBorder(
-
-          borderRadius:
-              BorderRadius.circular(15),
-
-          borderSide:
-              const BorderSide(
-
-            color:
-                Color(0xff1E3C72),
-
-            width: 2,
-          ),
-        ),
       ),
-    );
-  }
 
 
-  @override
-  void dispose() {
 
-    _emailController.dispose();
+      filled:true,
 
-    _passwordController.dispose();
+      fillColor:const Color(0xffF5F7FA),
 
-    _nameController.dispose();
 
-    super.dispose();
-  }
+
+
+      border:OutlineInputBorder(
+
+        borderRadius:BorderRadius.circular(18),
+
+        borderSide:BorderSide.none,
+
+      ),
+
+
+
+
+      focusedBorder:OutlineInputBorder(
+
+        borderRadius:BorderRadius.circular(18),
+
+        borderSide:const BorderSide(
+
+          color:Color(0xff1E3C72),
+
+          width:2,
+
+        ),
+
+      ),
+
+
+    ),
+
+
+  );
+
+
+}
+
+
+
+
+
+@override
+void dispose(){
+
+
+  emailController.dispose();
+
+  passwordController.dispose();
+
+  nameController.dispose();
+
+
+  super.dispose();
+
+}
 }
